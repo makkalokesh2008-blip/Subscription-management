@@ -1,0 +1,73 @@
+{
+  "apis": [
+    {
+      "name": "Spring Boot Direct (/api/plans)",
+      "status": false,
+      "details": "Status: 401"
+    },
+    {
+      "name": "FastAPI Health (/health)",
+      "status": true,
+      "details": "Status: 200, Data: {\"status\":\"ok\",\"service\":\"SubscriptionHub AI Gateway\"}"
+    },
+    {
+      "name": "Gateway Proxy",
+      "status": false,
+      "details": "Unexpected end of JSON input"
+    },
+    {
+      "name": "Node Search Service (/api/search)",
+      "status": false,
+      "details": "Status: 404"
+    }
+  ],
+  "crud": [
+    {
+      "name": "Create Plan",
+      "status": true,
+      "details": "Plan ID: 6a2f7d33389e47316d54625d"
+    },
+    {
+      "name": "Read Plan",
+      "status": false,
+      "details": "Status: 401"
+    },
+    {
+      "name": "Delete Plan",
+      "status": true,
+      "details": "Status: 200"
+    }
+  ],
+  "security": [
+    {
+      "name": "Admin Login",
+      "status": true,
+      "details": "JWT Received, Role=ROLE_ADMIN"
+    },
+    {
+      "name": "User Login",
+      "status": true,
+      "details": "JWT Received, Role=ROLE_USER"
+    },
+    {
+      "name": "Admin access to /users",
+      "status": true,
+      "details": "Status: 200"
+    },
+    {
+      "name": "Admin access to /payments",
+      "status": true,
+      "details": "Status: 200"
+    },
+    {
+      "name": "User access to /users (Should Fail)",
+      "status": false,
+      "details": "Status: 400 (Expected 403/401)"
+    },
+    {
+      "name": "User access to /payments/me",
+      "status": true,
+      "details": "Status: 200, Records: 0"
+    }
+  ]
+}
