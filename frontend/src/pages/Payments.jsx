@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaPlus, FaReceipt } from "react-icons/fa6";
+import { FaReceipt } from "react-icons/fa6";
 import api, { getApiError } from "../utils/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -12,7 +12,9 @@ const Payments = () => {
   const fetchPayments = async () => {
     try {
       const res = await api.get("/payments/me");
-      setPayments(res.data || []);
+      let data = res.data || [];
+      data = data.filter(p => p.planName || p.serviceName);
+      setPayments(data);
     } catch (err) {
       console.error(err);
       setError(getApiError(err, "Failed to load payments."));
@@ -25,18 +27,6 @@ const Payments = () => {
     fetchPayments();
   }, []);
 
-  const handleCreatePayment = async () => {
-    const serviceName = prompt("Enter subscription name:");
-    if (!serviceName) return;
-    const amount = parseFloat(prompt("Enter payment amount:"));
-    try {
-      await api.post("/payments", { serviceName, amount, status: "COMPLETED" });
-      fetchPayments();
-    } catch (err) {
-      alert("Failed to create payment record");
-    }
-  };
-
   return (
     <div style={{ paddingBottom: '4rem' }}>
       <div className="page-header">
@@ -44,9 +34,6 @@ const Payments = () => {
           <h1>Payment History</h1>
           <p>Track all your past transactions and upcoming renewals.</p>
         </div>
-        <button className="btn btn-primary" onClick={handleCreatePayment}>
-          <FaPlus /> Create Payment Record
-        </button>
       </div>
 
       {error && <div className="glass-panel" style={{ color: 'var(--accent-danger)', padding: '1rem', marginBottom: '2rem' }}>{error}</div>}
@@ -80,7 +67,7 @@ const Payments = () => {
                             <div style={{ width: '32px', height: '32px', borderRadius: '6px', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                               <FaReceipt color="var(--text-secondary)" />
                             </div>
-                            <span style={{ fontWeight: 500 }}>{p.serviceName}</span>
+                            <span style={{ fontWeight: 500 }}>{p.planName || p.serviceName}</span>
                           </div>
                         </td>
                         <td style={{ color: 'var(--text-secondary)' }}>{formattedDate}</td>

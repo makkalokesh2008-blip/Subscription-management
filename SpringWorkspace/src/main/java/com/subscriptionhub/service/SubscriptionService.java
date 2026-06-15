@@ -15,6 +15,9 @@ public class SubscriptionService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
+    @Autowired
+    private com.subscriptionhub.repository.PaymentRepository paymentRepository;
+
     public List<Subscription> getAllUserSubscriptions(String userId) {
         return subscriptionRepository.findByUserId(userId);
     }
@@ -34,7 +37,21 @@ public class SubscriptionService {
     public Subscription addSubscription(Subscription subscription) {
         subscription.setCreatedAt(LocalDateTime.now());
         subscription.setUpdatedAt(LocalDateTime.now());
-        return subscriptionRepository.save(subscription);
+        Subscription saved = subscriptionRepository.save(subscription);
+        
+        // Automatically create a payment record
+        com.subscriptionhub.model.Payment payment = com.subscriptionhub.model.Payment.builder()
+                .userId(saved.getUserId())
+                .userName("User") // Default or ideally fetched from context
+                .planName(saved.getServiceName())
+                .amount(saved.getMonthlyCost())
+                .status("COMPLETED")
+                .paymentDate(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
+                .build();
+        paymentRepository.save(payment);
+        
+        return saved;
     }
 
     public Subscription updateSubscription(String id, Subscription subscriptionDetails) {

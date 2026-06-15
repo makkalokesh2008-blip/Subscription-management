@@ -37,7 +37,7 @@ const AddPlan = () => {
         description: formData.benefits
       });
       alert("Plan added successfully");
-      navigate("/plans");
+      navigate("/admin/plans");
     } catch (err) {
       console.log(err);
       setError(getApiError(err, "Failed to add plan."));
@@ -47,83 +47,91 @@ const AddPlan = () => {
   };
 
   return (
-    <section className="page-stack">
-      <div className="page-hero glass-panel">
+    <div style={{ paddingBottom: '4rem', maxWidth: '800px', margin: '0 auto' }}>
+      <div className="page-header" style={{ marginBottom: '2rem' }}>
         <div>
-          <span className="eyebrow">Admin tools</span>
-          <h1>Add new plan</h1>
+          <span className="eyebrow" style={{ color: 'var(--accent-blue)' }}>Admin Tools</span>
+          <h1 style={{ marginTop: '0.5rem' }}>Add New Plan</h1>
           <p>Create a polished subscription offer for customers to compare and buy.</p>
         </div>
       </div>
 
-      <div className="form-shell glass-panel">
-        <div className="form-intro">
-          <div className="form-icon">
-            <FaLayerGroup />
+      <div className="glass-panel" style={{ padding: '2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+            <FaLayerGroup color="var(--accent-purple)" size={20} />
           </div>
-          <h2>Plan details</h2>
-          <p className="muted-text">Keep the details simple, clear, and conversion friendly.</p>
+          <div>
+            <h2 style={{ fontSize: '1.25rem' }}>Plan Details</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Keep the details simple, clear, and conversion friendly.</p>
+          </div>
         </div>
 
-        <form className="modern-form" onSubmit={handleSubmit}>
-          {error && <div className="alert-banner alert-danger">{error}</div>}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          {error && <div style={{ padding: '1rem', background: 'rgba(238,0,0,0.1)', color: 'var(--accent-danger)', borderRadius: '8px', border: '1px solid rgba(238,0,0,0.2)' }}>{error}</div>}
 
-          <label>
-            <span>Plan Name</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Plan Name</label>
             <input
               name="planName"
               onChange={handleChange}
-              placeholder="Premium Monthly"
+              placeholder="e.g. Premium Monthly"
               required
               type="text"
               value={formData.planName}
+              style={{ width: '100%' }}
             />
-          </label>
+          </div>
 
-          <div className="form-grid-2">
-            <label>
-              <span>Price</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Price (₹)</label>
               <input
                 name="price"
                 onChange={handleChange}
-                placeholder="999"
+                placeholder="e.g. 999"
                 required
                 type="number"
                 value={formData.price}
+                style={{ width: '100%' }}
               />
-            </label>
+            </div>
 
-            <label>
-              <span>Duration</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Duration (Days)</label>
               <input
                 name="duration"
                 onChange={handleChange}
-                placeholder="1"
+                placeholder="e.g. 30"
                 required
                 type="number"
                 value={formData.duration}
+                style={{ width: '100%' }}
               />
-            </label>
+            </div>
           </div>
 
-          <label>
-            <span>Benefits</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Benefits</label>
             <textarea
               name="benefits"
               onChange={handleChange}
-              placeholder="Unlimited access, priority support, premium content"
-              rows="5"
+              placeholder="e.g. Unlimited access, Priority support, Premium content"
+              rows="4"
               value={formData.benefits}
+              style={{ width: '100%', resize: 'vertical' }}
             />
-          </label>
+          </div>
 
-          <button className="btn btn-primary-gradient" disabled={loading} type="submit">
-            <FaPlus />
-            <span>{loading ? "Adding..." : "Add Plan"}</span>
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+            <button className="btn btn-primary" disabled={loading} type="submit" style={{ padding: '0.75rem 2rem', fontSize: '1rem' }}>
+              <FaPlus />
+              <span>{loading ? "Adding..." : "Add Plan"}</span>
+            </button>
+          </div>
         </form>
       </div>
-    </section>
+    </div>
   );
 };
 
